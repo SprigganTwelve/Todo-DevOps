@@ -1,35 +1,61 @@
 services:
+
   todo:
-    build: 
+    build:
       context: ./todo/docker
       dockerfile: Dockerfile
-    
     ports:
       - "3000:3000"
     environment:
-      - DB_HOST: postgres
-      - DB_PORT: 5432
-      - DB_NAME: todo_db
-      - DB_USER: todo_user
-      - DB_PASSWORD: todo_password
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: todo_db
+      DB_USER: todo_user
+      DB_PASSWORD: todo_password
     depends_on:
       - db
+    networks:
+      - todo-network
 
-  
+
   stats-api:
-    build: 
+    build:
       context: ./stats-api/docker
       dockerfile: Dockerfile
-    
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: todo_db
+      DB_USER: todo_user
+      DB_PASSWORD: todo_password
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    networks:
+      - todo-network
+
+
   db:
     image: postgres:18
     environment:
-      POSTGRES_USER: todo_user 
+      POSTGRES_USER: todo_user
       POSTGRES_DB: todo_db
       POSTGRES_PASSWORD: todo_password
     ports:
       - "5432:5432"
-    
-  
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - todo-network
 
-  
+
+networks:
+
+  todo-network:
+    driver: bridge
+
+
+volumes:
+
+  postgres_data:
