@@ -43,3 +43,12 @@ jobs:
           file: ./todo/docker/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/todo-api:${{ github.sha }}
+      
+  deploy:
+    runs-on: self-hosted
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    steps:
+      - run: hostname
+      - run: docker ps
+
