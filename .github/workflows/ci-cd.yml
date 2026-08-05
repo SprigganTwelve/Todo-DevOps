@@ -2,12 +2,12 @@ name: CI
 
 on:
   push:
-    - branches:
+    branches:
       - "**"
 
 jobs:
   test:
-    - name: Test  project
+      name: Test  project
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v4
@@ -16,17 +16,17 @@ jobs:
             node-version: 22
         
         - run: |
-              cd todo
-              npm ci
-              npm test
+            cd todo
+            npm ci
+            npm test
         
 
   build:
     name: Build and push docker image
     runs-on: ubuntu-latest
-    need: test
+    needs: test
     
-    if: github.ref === 'ref/heads/main'
+    if: github.ref == 'refs/heads/main'
 
     steps:
       - name: Login to Docker Hub
