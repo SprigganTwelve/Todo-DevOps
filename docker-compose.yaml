@@ -2,8 +2,8 @@ services:
 
   todo:
     build:
-      context: ./todo/docker
-      dockerfile: Dockerfile
+      context: ./todo
+      dockerfile: docker/Dockerfile
     ports:
       - "3000:3000"
     environment:
@@ -20,8 +20,8 @@ services:
 
   stats-api:
     build:
-      context: ./stats-api/docker
-      dockerfile: Dockerfile
+      context: ./stats-api
+      dockerfile: docker/Dockerfile
     environment:
       DB_HOST: db
       DB_PORT: 5432

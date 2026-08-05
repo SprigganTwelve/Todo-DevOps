@@ -1,2 +1,6 @@
 /node_modules/
 .env
+*_key
+*.pem
+deploy_key
+deploy_key.pub

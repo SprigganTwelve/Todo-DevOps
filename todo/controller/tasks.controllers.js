@@ -4,7 +4,7 @@ const Task = require("../models/tasks");
 
 const createTask = async (req,res,next)=>{
     try {
-        const {description,status}=req.body;
+        const { description, status = 'to-do' }=req.body;
 
         if(!description){
             return res.status(400).json({
@@ -57,11 +57,6 @@ const getTask = async(req,res,next)=>{
 
 
 
-
-
-
-
-
 const updateTask = async(req,res,next)=>{
     try{
         const task = await Task.update(
@@ -84,7 +79,6 @@ const updateTask = async(req,res,next)=>{
 
 
 
-
 const deleteTask = async(req,res,next)=>{
     try{
         const deleted = await Task.delete(
@@ -99,13 +93,11 @@ const deleteTask = async(req,res,next)=>{
 
         res.status(204).send();
 
-    }catch(err){
+    }
+    catch(err){
         next(err);
     }
 };
-
-
-
 
 
 
