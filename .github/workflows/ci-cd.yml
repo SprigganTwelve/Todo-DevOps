@@ -81,8 +81,19 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Check if image already exist
+        id: check_image
+        run: |
+          if docker manifest inspect \
+            ${{ secrets.DOCKERHUB_USERNAME }}/todo-api:${{ github.sha }} > dev/null 2>&1
+          then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
 
-      - name: Build and push image
+      - name: Build and push image if needed
+        if: steps.check_image.outputs.exists == 'false'
         uses: docker/build-push-action@v6
         with:
           context: ./todo
@@ -105,11 +116,12 @@ jobs:
             ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
 
         - name: Copy compose file
-          run: scp \
-                -P ${{ secrets.DEPLOY_PORT }} \ 
+          run: |
+                scp \
+                -P ${{ secrets.DEPLOY_PORT }} \
                 ./todo/compose.yml \
                 ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/srv/todo/compose.yml
-        
+
         - name: Deploy application
           run:
             ssh \
