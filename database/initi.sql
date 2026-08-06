@@ -1,0 +1,7 @@
+CREATE TABLE tasks (
+    id SERIAL PRIMARY KEY,
+    description TEXT NOT NULL,
+    status VARCHAR(20) DEFAULT 'todo',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

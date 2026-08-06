@@ -4,7 +4,7 @@ const Task = require("../models/tasks");
 
 const createTask = async (req,res,next)=>{
     try {
-        const { description, status = 'to-do' }=req.body;
+        const { description, status = 'todo' }=req.body;
 
         if(!description){
             return res.status(400).json({

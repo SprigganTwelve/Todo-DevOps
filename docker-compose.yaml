@@ -37,7 +37,7 @@ services:
 
 
   db:
-    image: postgres:18
+    image: postgres:17
     environment:
       POSTGRES_USER: todo_user
       POSTGRES_DB: todo_db
@@ -46,6 +46,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:docker-entrypoint-initdb.d/init.sql
+
     networks:
       - todo-network
 
