@@ -90,6 +90,27 @@ jobs:
     if: github.ref == 'refs/heads/main'
     needs: build
     steps:
-      - run: hostname
-      - run: docker ps
+        - uses: actions/checkout
+
+        - name: Start SSH agent
+          uses: webfactory/ssh-agent@v0.9.0
+          with:
+            ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+
+        - name: Copy compose file
+          run: scp \
+                -P ${{ secrets.DEPLOY_PORT }} \ 
+                ./todo/compose.yml \
+                ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/srv/todo/compose.yml
+        
+        - name: Deploy application
+          run:
+            ssh \
+            -p ${{ secrets.DEPLOY_PORT }}
+            ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+            "cd /srv/todo && TAG={{ github.sha }} docker compose up -d"
+
+        - name: Health check
+          run: |
+            curl http://localhost/health
 

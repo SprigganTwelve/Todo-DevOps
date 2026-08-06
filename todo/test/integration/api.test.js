@@ -1,7 +1,7 @@
 const Task = require("../../models/tasks");
 
 describe("Task Model", () => {
-    test("should create a task", () => {
+    test("should create a task", async () => {
         const task = await Task.create({
             description: "Learn Express"
         });
@@ -11,7 +11,7 @@ describe("Task Model", () => {
         expect(task.id).toBeDefined();
     });
 
-    test("should find all tasks", () => {
+    test("should find all tasks", async () => {
         const tasks = await Task.findAll();
         expect(tasks.length).toBeGreaterThan(0);
     });
@@ -24,11 +24,10 @@ describe("Task Model", () => {
         expect(task.description).toBe("Learn Express");
     });
 
-    test("should delete task", () => {
+    test("should delete task", async () => {
         const task = await Task.create({
             description: "Delete me"
         });
-
         expect(Task.delete(task.id)).toBe(true);
     });
 

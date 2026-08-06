@@ -1,0 +1,24 @@
+services:
+  todo-api:
+    container_name: todo-api
+    image: springgantwelve/todo-devops-app-service:${TAG}
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    deponds_on:
+      - toodo-db
+    restart: always
+
+  todo-db:
+    container_name: todo-db
+    image: postgre:17
+    env_file:
+      - .env
+    volumes:
+      todo-db-data:/var/lib/postgresql/data
+
+    restart: always
+
+volumes:
+  todo-db-data:
