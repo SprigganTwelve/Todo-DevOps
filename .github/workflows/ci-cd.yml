@@ -10,23 +10,24 @@ jobs:
       name: Test  project
       runs-on: ubuntu-latest
       services:
-        postgres: postgres:17
-        env:
-          POSTGRES_DB: todo_db
-          POSTGRES_DB: todo_db
-          POSTGRES_PASSWORD: todo_password
-        ports:
-          - 5432:5432
-        options: >-
-            --health-cmd "psql_isready -U todo_user -d todo_user"
-            --health-interval 10s
-            --health-timeout 5s
-            --health-retries 5
+        postgres: 
+          image: postgres:17
+          env:
+            POSTGRES_DB: todo_db
+            POSTGRES_USER: todo_user
+            POSTGRES_PASSWORD: todo_password
+          ports:
+            - 5432:5432
+          options: >-
+              --health-cmd "pg_isready -U todo_user -d todo_db"
+              --health-interval 10s
+              --health-timeout 5s
+              --health-retries 5
       
       env:
         DB_HOST: localhost
         DB_PORT: 5432
-        DB_NAME: todo_user
+        DB_NAME: todo_db
         DB_USER: todo_user
         DB_PASSWORD: todo_password
 
@@ -37,7 +38,7 @@ jobs:
             node-version: 22
 
         - name: Install PostgreSQL client
-          run: sudo apt-get update && sudo apt-get install -y postgre-client
+          run: sudo apt-get update && sudo apt-get install -y postgrel-client
         
         - name: Initialize database
           run: |
