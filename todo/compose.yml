@@ -1,7 +1,7 @@
 services:
   todo-api:
     container_name: todo-api
-    image: springgantwelve/todo-devops-app-service:${TAG}
+    image: springgantwelve/todo-api:${TAG}
     ports:
       - "3000:3000"
     env_file:
