@@ -90,7 +90,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     needs: build
     steps:
-        - uses: actions/checkout
+        - uses: actions/checkout@v4
 
         - name: Start SSH agent
           uses: webfactory/ssh-agent@v0.9.0
@@ -106,7 +106,7 @@ jobs:
         - name: Deploy application
           run:
             ssh \
-            -p ${{ secrets.DEPLOY_PORT }}
+            -p ${{ secrets.DEPLOY_PORT }} \
             ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
             "cd /srv/todo && TAG={{ github.sha }} docker compose up -d"
 
