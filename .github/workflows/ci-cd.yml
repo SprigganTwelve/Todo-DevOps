@@ -38,7 +38,7 @@ jobs:
             node-version: 22
 
         - name: Install PostgreSQL client
-          run: sudo apt-get update && sudo apt-get install -y postgrel-client
+          run: sudo apt-get update && sudo apt-get install -y postgresql-client
         
         - name: Initialize database
           run: |
