@@ -124,9 +124,9 @@ jobs:
         - name: Deploy application
           run:
             ssh \
-            -p ${{ secrets.DEPLOY_PORT }} \
-            ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
-            "cd /srv/todo && TAG={{ github.sha }} docker compose up -d"
+              -p ${{ secrets.DEPLOY_PORT }} \
+              ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+              "cd /srv/todo && TAG=${{ github.sha }} docker compose up -d"
 
         - name: Health check
           run: |
