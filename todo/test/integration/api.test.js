@@ -28,7 +28,8 @@ describe("Task Model", () => {
         const task = await Task.create({
             description: "Delete me"
         });
-        expect(Task.delete(task.id)).toBe(true);
+        const deleted = await Task.delete(task.id);
+        expect(deleted).toBe(true);
     });
 
 });

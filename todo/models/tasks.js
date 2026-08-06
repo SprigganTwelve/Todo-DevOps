@@ -114,7 +114,6 @@ class Task {
         );
 
         return result.rowCount > 0;
-
     }
 
 }
