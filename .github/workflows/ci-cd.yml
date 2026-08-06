@@ -114,6 +114,13 @@ jobs:
           with:
             ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
 
+        - name: Test SSH
+          run: |
+            ssh -vvv \
+              -p ${{ secrets.DEPLOY_PORT }} \
+              ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+              "echo OK"
+
         - name: Copy compose file
           run: |
                 scp \
