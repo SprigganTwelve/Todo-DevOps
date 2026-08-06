@@ -5,56 +5,61 @@ on:
     branches:
       - "**"
 
+
 jobs:
   test:
-      name: Test  project
-      runs-on: ubuntu-latest
-      services:
-        postgres: 
-          image: postgres:17
-          env:
-            POSTGRES_DB: todo_db
-            POSTGRES_USER: todo_user
-            POSTGRES_PASSWORD: todo_password
-          ports:
-            - 5432:5432
-          options: >-
-              --health-cmd "pg_isready -U todo_user -d todo_db"
-              --health-interval 10s
-              --health-timeout 5s
-              --health-retries 5
-      
-      env:
-        DB_HOST: localhost
-        DB_PORT: 5432
-        DB_NAME: todo_db
-        DB_USER: todo_user
-        DB_PASSWORD: todo_password
+    name: Test project
+    runs-on: ubuntu-latest
 
-      steps:
-        - uses: actions/checkout@v4
-        - uses: actions/setup-node@v4
-          with:
-            node-version: 22
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: todo_user
+          POSTGRES_DB: todo_db
+          POSTGRES_PASSWORD: todo_password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U todo_user -d todo_db"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
-        - name: Install PostgreSQL client
-          run: sudo apt-get update && sudo apt-get install -y postgresql-client
-        
-        - name: Initialize database
-          run: |
-            PGPASSWORD=todo_password psql \
-              -h localhost \
-              -U todo_user \
-              -d todo_db \
-              -f database/init.sql
+    env:
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_NAME: todo_db
+      DB_USER: todo_user
+      DB_PASSWORD: todo_password
 
-        
-        - name: Install dependencies & test
-          run: |
-            cd todo
-            npm ci
-            npm test
-        
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install PostgreSQL client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
+      - name: Initialize database
+        run: |
+          PGPASSWORD=todo_password psql \
+            -h localhost \
+            -U todo_user \
+            -d todo_db \
+            -f database/init.sql
+
+      - name: Install dependencies
+        run: |
+          cd todo
+          npm ci
+
+      - name: Run tests
+        run: |
+          cd todo
+          npm test
 
   build:
     name: Build and push docker image
