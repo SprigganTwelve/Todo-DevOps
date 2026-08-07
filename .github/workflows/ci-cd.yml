@@ -121,6 +121,7 @@ jobs:
               ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
               "echo OK"
 
+
         - name: Copy compose file
           run: |
                 scp \
