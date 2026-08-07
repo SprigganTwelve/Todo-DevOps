@@ -130,7 +130,7 @@ jobs:
                 ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/srv/todo/compose.yml
 
         - name: Deploy application
-          run:
+          run: |
             ssh \
               -p ${{ secrets.DEPLOY_PORT }} \
               ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
