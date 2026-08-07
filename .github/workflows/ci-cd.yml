@@ -138,5 +138,8 @@ jobs:
 
         - name: Health check
           run: |
-            curl http://localhost/health
+            ssh \
+              -p ${{ secrets.DEPLOY_PORT }} \
+              ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+              "curl http://localhost:3000/health"
 
