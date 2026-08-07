@@ -6,17 +6,17 @@ services:
       - "3000:3000"
     env_file:
       - .env
-    deponds_on:
-      - toodo-db
+    depends_on:
+      - todo-db
     restart: always
 
   todo-db:
     container_name: todo-db
-    image: postgre:17
+    image: postgres:17
     env_file:
       - .env
     volumes:
-      todo-db-data:/var/lib/postgresql/data
+      - todo-db-data:/var/lib/postgresql/data
 
     restart: always
 
